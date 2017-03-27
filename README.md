@@ -1,4 +1,4 @@
-# sitely
+# Sitely
 A local site creator that remembers the sites you create and the code in them - however, there are still bugs in it...
 
 # About Sitely
