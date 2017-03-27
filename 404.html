@@ -1,0 +1,22 @@
+<html>
+<head>
+<script id="SitelyScript">
+	var loc = top.location.href;
+	var locs = loc.split(".com/");
+	if (locs[1] == "scripts/site.ly") {
+		document.write("//Site.ly (JAVASCRIPT FILE)<br>text.create(&quot;sitename&quot;);<br>var scode = site.load(sitename);<br>Variable.Prototype.define = function(value) {<br>this.variablize(value);<br>}<br>scode.define(text.load(sitename).add(&quot;&lt;-- created with Sitely --&gt;&quot;));");
+	}
+	else {
+		if (locs.length >= 2) {
+			document.write(localStorage.getItem("_sitely_" + locs[1]) + "<!-- " + locs[1] + " was created with Sitely by JayCorp. Copyright JayCorp 2017 -->");
+			document.getElementById("SitelyScript").innerHTML = "";
+			document.getElementById("SitelyScript").setAttribute("src", "scripts/site.ly");
+		}
+		else {
+			document.write("The page you were searching for does not exist....");
+		}
+	}
+</script>
+</head>
+<!-- Note: This code does not work in a private file:/// server (see note at end of index.html) -->
+</html>

@@ -1,0 +1,250 @@
+<html>
+	<head>
+		<title>Sitely (sbhuva version)</title>
+		<meta name="Description" content="Sbhuva created Sitely to locally create sites and remember them." />
+		<meta name="Author" content="Sbhuva" />
+		<!-- <meta name="Changes" content="Original code has been modified to suit PUBLIC GITHUB CHANGES" /> -->
+		<!-- <meta name="Copyright" content="License must be included in order to use this code.." /> -->
+		<!-- 
+						MIT License
+
+				Copyright (c) 2017 sbhuva
+
+				Permission is hereby granted, free of charge, to any person obtaining a copy
+				of this software and associated documentation files (the "Software"), to deal
+				in the Software without restriction, including without limitation the rights
+				to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+				copies of the Software, and to permit persons to whom the Software is
+				furnished to do so, subject to the following conditions:
+
+				The above copyright notice and this permission notice shall be included in all
+				copies or substantial portions of the Software.
+
+				THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+				IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+				FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+				AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+				LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+				OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+				SOFTWARE.
+		-->
+		<style>
+			.space {
+				padding-left: 80%;
+				display: inline-block;
+			}
+			#nav>* {
+				display: inline-block;
+			}
+			.logo {
+				font-family: Courier;
+				font-style:oblique;
+				font-variant-caps: small-caps;
+			}
+			input {
+				padding: 5px;
+				border-radius: 5px;
+				border: 1px solid gray;
+				margin-bottom: 5px;
+			}
+			input:focus {
+				outline:none;
+			}
+			table, td, th, tr {
+				border: 2px solid gray;
+				border-collapse: collapse;
+			}
+			td, th {
+				padding: 10px;
+			}
+			.logo, .dblogo {
+				cursor: pointer;
+			}
+			body {
+				cursor: progress;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="color: white; background-color: black; position: absolute; top:0; left: 0; width: 100%;" id="nav">
+			<h1 style="padding-left: 50px;" class="logo" onclick="user.logo();">Sitely</h1>
+			<a class="space"></a>
+			<b style="color:gold;" onclick="alert('Programmed By sbhuva, Copyright sbhuva 2017.');" class="dblogo">&copy;sbhuva 2017</b>
+		</div>
+		<div id="login-reg" style="position: absolute; top: 100px; width: 100%; left:0; height: auto;">
+			<center>
+				<h1 style="color:limegreen;font-style:italic;">Login to Start</h1>
+				<p>Registration is automatic. If the username you enter doesn't exist, a new account with that username will be created.</p><br><br>
+				<input type="text" maxlength="10" id="logenin" placeholder="Username" /><br>
+				<input type="password" maxlength="20" id="pwd" placeholder="Password" /><br>
+				<br><button id="sub" onclick="user.login();">Login/Register</button>
+			</center>
+		</div>
+		<div id="logged-in-reg" style="position: absolute; top: 100px; width: 100%; left:0; height:auto;">
+			<center>
+				<h1><a id="yep" onclick="user.profile();" style="text-decoration:underline;"></a>'s Sites&nbsp;&nbsp;&nbsp;&nbsp;<button id="logout" onclick="user.logout();">Logout</button></h1>
+				<p>Welcome to Sitely, by JayCorp! To begin, click the "Create Site" button and fill out the information!</p>
+				<br><br>
+				<table id="dyn"><tr><th>Site Name</th><th>Site Code</th></tr></table><br><br>
+				<button onclick="user.site();">Create Site</button>&nbsp;<button onclick="user.del();">Remove Site</button>&nbsp;<button onclick="user.open();">Open Site</button>
+			</center>
+		</div>
+	</body>
+	<script>
+	if (localStorage.getItem("sites")) {
+
+	}
+	else {
+		localStorage.setItem("sites", "");
+	}
+
+		function createDynamicTable() {
+			var table = document.getElementById("dyn");
+			var arrSites = localStorage.getItem("sites");
+			if (arrSites) {
+				var arr = arrSites.split(", ");
+				arr.forEach(function(item, index) {
+					if (index + 1 == arr.length) {
+						//don't enter last item into table
+					}
+					else {
+						var site = item;
+						var scode = localStorage.getItem("_sitely_" + item);
+						table.innerHTML += "<tr><td>" + site + "</td><td><textarea>" + scode + "</textarea></td>";
+					}
+				});
+			}
+			else {
+				table.innerHTML += "<tr><td style='color: red;'>-No Sites Created Yet-</td><td style='color: red;'>-No Sites Created Yet-</td></tr>";
+			}
+		}
+
+
+
+		var loggedin = localStorage.getItem("log");
+		if (loggedin) {
+			document.getElementById("logged-in-reg").style.display = "block";
+			document.getElementById("login-reg").style.display = "none";
+			document.getElementById("yep").innerHTML = loggedin;
+			createDynamicTable();
+		}
+		else {
+			document.getElementById("logged-in-reg").style.display = "none";
+			document.getElementById("login-reg").style.display = "block";
+		}
+
+
+		function subNow() {
+			var usr = document.getElementById("logenin");
+			var pwd = document.getElementById("pwd");
+
+			if (user.name() == usr.value) {
+				localStorage.setItem("log", usr.value);
+			}
+			else {
+				var yeanay = confirm("Would you like to create/login to an account under the name " + usr.value + "?");
+				if (yeanay) {
+					localStorage.setItem("log", usr.value);
+					console.log("log set to: " + usr.value);
+					location.href = top.location.href;
+				}
+				else {
+					//do nothing
+				}
+			}
+		}
+		function usrNaam() {
+			return localStorage.getItem("log");
+		}
+
+		function createSite() {
+			var sitename = prompt("Website Name:");
+			var sitecode = prompt("Website Code (HTML):");
+			if (sitename) {
+				if (sitecode) {
+					localStorage.setItem("_sitely_" + sitename, sitecode);
+					if (localStorage.getItem("sites") !== "null") {
+						localStorage.setItem("sites", localStorage.getItem("sites") + sitename + ", ");
+					}
+					else {
+						localStorage.setItem("sites", sitename + ", ");
+					}
+					location.href = top.location.href;
+				}
+			}
+		}
+		function delSite() {
+			var sitename = prompt("Name of Website to be Removed:");
+			if (sitename) {
+				var storeage = localStorage.getItem("_sitely_" + sitename);
+				if (storeage) {
+					localStorage.removeItem("_sitely_" + sitename);
+					var thisgone = localStorage.getItem("sites");
+					var them = sitename + ", ";
+					var re = new RegExp(them, "g");
+					var newly = thisgone.replace(re, "");
+					localStorage.setItem("sites", newly);
+					location.href = top.location.href;
+				}
+				else {
+					alert("That site doesn't exist...");
+				}
+			}
+		}
+
+		function openSite() {
+			var sitename = prompt("Name of Website to Open:");
+			if (sitename) {
+				var storeage = localStorage.getItem("_sitely_" + sitename);
+				if (storeage) {
+					alert("Opening site now... Note: Share your website by copying the URL in the search bar above your site!");
+					window.open("/" + sitename);
+				}
+				else {
+					alert("That site doesn't exist...");
+				}
+			}
+		}
+		function viewSites() {
+			var exists = localStorage.getItem("sites");
+			if (exists.length !== 0) {
+				var re = "User: " + usrNaam() + "; Sites: " + localStorage.getItem("sites") + "; All sites created with Sitely. Sitely is Copyright Sbhuva 2017.";
+				var place = re.replace(/\,\ \;/g, ";");
+				alert(place);
+			}
+			else {
+				var re = "User: " + usrNaam() + "; Sites: -none-; All sites created with Sitely. Sitely is Copyright Sbhuva 2017.";
+				alert(re);
+			}
+		}
+
+		var user = {
+			name: function(){usrNaam()},
+			login: function(){subNow()},
+			logout: function(){localStorage.removeItem("log");location.href=top.location.href;},
+			site: function(){createSite()},
+			del: function(){delSite()},
+			open: function(){openSite()},
+			logo: function(){location.href="https://sitely.netlify.com/"},
+			profile: function(){viewSites()}
+		}
+
+
+
+		setTimeout(function() {
+			document.body.style.cursor = "wait";
+		}, 5000);
+		setTimeout(function() {
+			document.body.style.cursor = "default";
+		}, 10000)
+	</script>
+
+
+
+	<!-- Note: This code only opens sites successfully on a public server where 404.html is the default 404 page. 
+			   This means you cannot test this code in a file:/// private html page.
+			   Also note that the original version of this was not designed for Github and has been modified since,
+			   So additional bugs may have been created. Please notify me if this is the case.
+			   Finally, excuse the random variable names in my script. As I said, this was not meant for Github originally.
+	-->
+</html>
