@@ -2,7 +2,7 @@
 <head>
 <script id="SitelyScript">
 	var loc = top.location.href;
-	var locs = loc.split(".com/");
+	var locs = loc.split("/sitely/");
 	if (locs[1] == "scripts/site.ly") {
 		document.write("//Site.ly (JAVASCRIPT FILE)<br>text.create(&quot;sitename&quot;);<br>var scode = site.load(sitename);<br>Variable.Prototype.define = function(value) {<br>this.variablize(value);<br>}<br>scode.define(text.load(sitename).add(&quot;&lt;-- created with Sitely --&gt;&quot;));");
 	}
